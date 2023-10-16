@@ -1,8 +1,8 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
+	"os"
 
 	"github.com/pelletier/go-toml/v2"
 )
@@ -12,7 +12,7 @@ func main() {
 	var invoice_data InvoiceData
 
 	// Read TOML file
-	toml_file, err := ioutil.ReadFile("invoice-generator.toml")
+	toml_file, err := os.ReadFile("invoice-generator.toml")
 	if err != nil {
 		log.Fatal(err)
 	}

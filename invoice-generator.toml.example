@@ -15,8 +15,8 @@ Sed fringilla mauris, 68
 ServiceDescription = "Backend development services for the period of {xx.xx.xxxx} to {yy.yy.yyyy}"
 Price = 1500
 Currency = "USD"
-Quantity = 3
-VAT = 6
+Quantity = 2
+VAT = 10
 PaymentDetails = "Please transfer the due amount according to the following payment details."
 BeneficiaryName = "IE Bob Sanders"
 BeneficiaryAddress = "FARFROMPOOPEN ROAD TURN 5, CITY, COUNTRY"

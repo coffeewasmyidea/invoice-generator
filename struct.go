@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -30,10 +31,39 @@ type InvoiceData struct {
 	SwiftBIC           string
 }
 
-func (invoice *InvoiceData) InvoiceNumber() string {
+func ReplaceServicePeriod(value string) (int, time.Month) {
+	parts := strings.Split(value, ".")
+
+	if len(parts) != 2 {
+		panic("Incorrect data format. It should be like 10.2023 (month.year)")
+	}
+	monthInt, err := strconv.Atoi(parts[0])
+	if err != nil {
+		panic("Error when converting a month")
+	}
+
+	year, err := strconv.Atoi(parts[1])
+	if err != nil {
+		panic("Error when converting a year")
+	}
+
+	month := time.Month(monthInt)
+	return year, month
+}
+
+func (invoice *InvoiceData) InvoiceNumber(replace_service_period string) string {
+	var year int
+	var month time.Month
 	now := time.Now()
-	year, month, _ := now.Date()
 	location := now.Location()
+
+	if replace_service_period != "" {
+		year, month = ReplaceServicePeriod(replace_service_period)
+
+	} else {
+		year, month, _ = now.Date()
+	}
+
 	current_month := (time.Date(year, month, 1, 0, 0, 0, 0, location)).Format("02.01.06")
 	s := strings.Replace(current_month, ".", "", 2)
 	return fmt.Sprintf("SE-%s", s)
@@ -55,20 +85,40 @@ func (invoice *InvoiceData) InvoiceDueDate() string {
 	return fmt.Sprintf("%s", current_date)
 }
 
-func (invoice *InvoiceData) ServicePeriod() string {
+func (invoice *InvoiceData) ServicePeriod(replace_service_period string) string {
+	var year int
+	var month time.Month
+	var day int
 	now := time.Now()
-	year, month, day := now.Date()
 	location := now.Location()
+
+	if replace_service_period != "" {
+		year, month = ReplaceServicePeriod(replace_service_period)
+		_, _, day = now.Date()
+	} else {
+		year, month, day = now.Date()
+	}
+
 	current_date := time.Date(year, month, day, 0, 0, 0, 0, location)
 	return fmt.Sprintf("%s, %d", current_date.Month(), current_date.Year())
 }
 
-func (invoice *InvoiceData) getServiceDescription() string {
+func (invoice *InvoiceData) getServiceDescription(replace_service_period string) string {
+	var start time.Time
+	var end time.Time
 	now := time.Now()
-	year, month, _ := now.Date()
 	location := now.Location()
-	start := time.Date(year, month, 1, 0, 0, 0, 0, location)
-	end := start.AddDate(0, 1, -1)
+
+	if replace_service_period != "" {
+		year, month := ReplaceServicePeriod(replace_service_period)
+		start = time.Date(year, month, 1, 0, 0, 0, 0, location)
+	} else {
+
+		year, month, _ := now.Date()
+		start = time.Date(year, month, 1, 0, 0, 0, 0, location)
+	}
+
+	end = start.AddDate(0, 1, -1)
 	start_date := start.Format("02.01.2006")
 	end_date := end.Format("02.01.2006")
 	s := strings.Replace(invoice.ServiceDescription, "{xx.xx.xxxx}", start_date, 1)

@@ -1,1 +1,11 @@
+*.idea/
+*__idea__/
+*.log
+*.db
+.vscode/
+.env
+.local/
+bin/
+build/
+dist/
 invoice-generator.toml

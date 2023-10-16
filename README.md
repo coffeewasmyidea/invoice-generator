@@ -1,52 +1,48 @@
 # Invoice-generator
 
-It is a simple and kind of bad implementation of the small invoice generator
-based on [gofpdf](https://github.com/go-pdf/fpdf) I use every month. It does not
-contain any weight dependencies and is a fully automated tool that will do
-everything for you.
+Invoice-generator is a simple tool for generating invoices in automatic mode.
+There is no need to fill out anything every month. You do it once and that's it.
 
-## General usage
+It can be used for several projects at once, just create different configuration
+files and put them in different folders where you want to save invoices.
 
-```bash
-git clone https://github.com/coffeewasmyidea/invoice-generator.git
-```
+## Installation
 
-```bash
-cd invoice-generator/
-```
-
-```bash
-cp invoice-generator.toml.example invoice-generator.toml
-```
-
-```bash
-go build
-```
-
-Fill in your details in the config file `invoice-generator.toml` and just put it
-with the generated `invoice-generator` binary in the project invoices folder and
-run it once a month. Is done!
-
-or you also can install `invoice-generator` as binnary by using: 
-
-```bash
+```shell
 go install github.com/coffeewasmyidea/invoice-generator@latest
 ```
 
-In this case, you need to download the `invoice-generator.toml` config
-separately and put it into the project invoice folders. Maybe later I will
-implement a generator for config samples, but currently, I didn't add anything
-extra.
+You also need to download the `invoice-generator.toml` configuration file for
+each project folder for which you want to generate invoices. 
 
-```bash
+```shell
 curl -o /path/to/invoice-folder/invoice-generator.toml https://raw.githubusercontent.com/coffeewasmyidea/invoice-generator/main/invoice-generator.toml.example
 ```
 
-And now you just need to run the `invoice-generator g` in folders where
-`invoice-generator.toml` is present.
+## General usage
 
-```bash
-./invoice-generator
+Download, configure, and place `invoice-generator.toml` in the project invoice directory as described above.
+
+Generate a new invoice:
+
+```shell
+invoice-generator g
+```
+
+In addition, you can pass the date (month.year) of the desired service period as
+an argument as follows:
+
+```shell
+invoice-generator g 10.2023
+```
+
+You will get an invoice for the desirable period (previous month for example)
+with the correct dates for all presented fields.
+
+## Help information
+
+```shell
+$ invoice-generator
 NAME:
    invoice-generator - A new cli application
 
@@ -54,7 +50,8 @@ USAGE:
    invoice-generator [global options] command [command options] [arguments...]
 
 COMMANDS:
-   generate, g  generate a new invoice based on invoice-generator.toml information and current date
+   generate, g  Generate a new invoice based on invoice-generator.toml information and current date.
+                Alternatively, you can pass the date (month.year) of the desired service period as anargument like this: invoice-generator g 10.2023
    help, h      Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
@@ -67,8 +64,6 @@ GLOBAL OPTIONS:
 <img src="examples/SE-010123.png" max-width="880px" style="margin:10px 0 15px 0">
 </div>
 
-
 ## Requiremrnts
 
-There are no requirements and additional dependencies it will work on any OS.
-
+There are no requirements and additional dependencies it will work on (Windows/Linux/MacOS).

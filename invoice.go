@@ -2,14 +2,18 @@ package main
 
 import (
 	"fmt"
+	"github.com/urfave/cli/v2"
 	"strings"
 	"time"
 
 	"github.com/go-pdf/fpdf"
 )
 
-func InvoiceGenerator(invoice_data InvoiceData) {
-	titleStr := fmt.Sprintf("INVOICE #%s", invoice_data.InvoiceNumber())
+func InvoiceGenerator(invoice_data InvoiceData, args cli.Args) {
+	// If it is present it replaces the original value.
+	replace_service_period := args.Get(0)
+
+	titleStr := fmt.Sprintf("INVOICE #%s", invoice_data.InvoiceNumber(replace_service_period))
 	pdf := fpdf.New("P", "mm", "A4", "") // 210 x 297
 	pdf.SetMargins(20, 20, 20)
 	pdf.SetCellMargin(3)
@@ -20,35 +24,44 @@ func InvoiceGenerator(invoice_data InvoiceData) {
 	pdf.Text(20, 30, titleStr)
 	pdf.Ln(20)
 
+	// Cell
+	pdf.CellFormat(90-cellGap-cellGap, 40, "", "1", 0, "LT", false, 0, "")
+
 	// From
+	y := pdf.GetY()
 	pdf.SetFont("helvetica", "BU", 11)
-	pdf.CellFormat(90-cellGap-cellGap, 45, "From:", "1", 0, "LT", false, 0, "")
+	pdf.SetX(20)
+	pdf.Cell(40, 10, "From:")
 
 	// Fullname
-	y := pdf.GetY()
+	y = pdf.GetY()
 	pdf.SetFont("helvetica", "", 11)
 	pdf.SetXY(20, y+6)
 	pdf.Cell(40, 10, invoice_data.Fullname)
 
 	// MyAddress
 	y = pdf.GetY()
-	pdf.SetXY(20, y+8)
+	pdf.SetXY(20, y+4*2)
 	pdf.MultiCell(90-cellGap-cellGap, 6, invoice_data.MyAddress, "0", "0", false)
-
+	//
 	// MyEmail
 	y = pdf.GetY()
-	pdf.SetXY(20, y-2)
-	pdf.Cell(40, 10, invoice_data.MyEmail)
+	pdf.Cell(40, 6, invoice_data.MyEmail)
 
 	// Tax ID
 	y = pdf.GetY()
-	pdf.SetXY(20, y+8)
-	pdf.Cell(40, 10, "TAX ID: "+invoice_data.TaxId)
+	pdf.SetXY(20, y+6)
+	pdf.Cell(40, 6, "TAX ID: "+invoice_data.TaxId)
 
-	// To
-	pdf.SetXY(20, 85)
+	// Cell
+	pdf.SetXY(20, 80)
+	pdf.CellFormat(90-cellGap-cellGap, 40, "", "1", 0, "LT", false, 0, "")
+
+	// Invoice for
+	y = pdf.GetY()
+	pdf.SetX(20)
 	pdf.SetFont("helvetica", "BU", 11)
-	pdf.CellFormat(90-cellGap-cellGap, 40, "Invoice for:", "1", 0, "LT", false, 0, "")
+	pdf.Cell(40, 10, "Invoice For:")
 
 	// Invoice to
 	y = pdf.GetY()
@@ -58,37 +71,37 @@ func InvoiceGenerator(invoice_data InvoiceData) {
 
 	// Company address
 	y = pdf.GetY()
-	pdf.SetXY(20, y+8)
+	pdf.SetXY(20, y+4*2)
 	pdf.MultiCell(90-cellGap-cellGap, 6, invoice_data.CompanyAddress, "0", "0", false)
 
 	pdf.SetXY(106, 40)
-	pdf.CellFormat(90-cellGap-cellGap, 45, "", "1", 0, "LT", false, 0, "")
+	pdf.CellFormat(90-cellGap-cellGap, 40, "", "1", 0, "LT", false, 0, "")
 
 	// Invoice number
 	y = pdf.GetY()
 	pdf.SetXY(106, y+6)
-	pdf.Cell(40, 10, "Invoice number: "+invoice_data.InvoiceNumber())
+	pdf.Cell(40, 10, "Invoice number: "+invoice_data.InvoiceNumber(replace_service_period))
 
 	// Service Period
 	y = pdf.GetY()
-	pdf.SetXY(106, y+8)
-	pdf.Cell(40, 10, "Service period: "+invoice_data.ServicePeriod())
+	pdf.SetXY(106, y+6)
+	pdf.Cell(40, 10, "Service period: "+invoice_data.ServicePeriod(replace_service_period))
 
 	// Invoice Date
 	y = pdf.GetY()
-	pdf.SetXY(106, y+8)
+	pdf.SetXY(106, y+6)
 	pdf.Cell(40, 10, "Invoice date: "+invoice_data.InvoiceDate())
 
 	// Invoice due date
 	y = pdf.GetY()
-	pdf.SetXY(106, y+8)
+	pdf.SetXY(106, y+6)
 	pdf.Cell(40, 10, "Invoice due date: "+invoice_data.InvoiceDueDate())
 
 	// Empty
-	pdf.SetXY(106, 85)
+	pdf.SetXY(106, 80)
 	pdf.CellFormat(90-cellGap-cellGap, 40, "", "1", 0, "LT", false, 0, "")
 
-	pdf.SetXY(20, 138)
+	pdf.SetXY(20, 130)
 
 	// Colors, line width and bold font
 	pdf.SetFillColor(73, 77, 99)
@@ -98,8 +111,8 @@ func InvoiceGenerator(invoice_data InvoiceData) {
 	pdf.SetFont("helvetica", "B", 12)
 
 	pdf.CellFormat(82, 11, "Service description", "", 0, "LM", true, 0, "")
-	pdf.CellFormat(35, 11, "Price/mo", "", 0, "LM", true, 0, "")
-	pdf.CellFormat(20, 11, "Qty", "", 0, "LM", true, 0, "")
+	pdf.CellFormat(32, 11, "Price/mo", "", 0, "LM", true, 0, "")
+	pdf.CellFormat(23, 11, "Qty", "", 0, "LM", true, 0, "")
 	pdf.CellFormat(35, 11, "Total", "", 0, "LM", true, 0, "")
 
 	// The last printed cell
@@ -110,10 +123,10 @@ func InvoiceGenerator(invoice_data InvoiceData) {
 	pdf.SetTextColor(0, 0, 0)
 	pdf.SetDrawColor(96, 96, 96)
 	pdf.SetFont("helvetica", "", 11)
-	list := pdf.SplitLines([]byte(invoice_data.getServiceDescription()), 87-cellGap-cellGap)
+	list := pdf.SplitLines([]byte(invoice_data.getServiceDescription(replace_service_period)), 87-cellGap-cellGap)
 
 	// Service description
-	pdf.Rect(20, 138, 82, 30+cellGap+cellGap, "D")
+	pdf.Rect(20, 130, 82, 30+cellGap+cellGap, "D")
 	y = pdf.GetY()
 	cell_ht := float64(len(list)) * 6
 	cellY := y + cellGap + (6-cell_ht)/2
@@ -123,52 +136,52 @@ func InvoiceGenerator(invoice_data InvoiceData) {
 		cellY += 6
 	}
 
-	pdf.Rect(20, 138+34, 82, 8+cellGap+cellGap, "D")
-	pdf.Rect(20, 138+34+12, 82, 8+cellGap+cellGap, "D")
+	pdf.Rect(20, 130+34, 82, 8+cellGap+cellGap, "D")
+	pdf.Rect(20, 130+34+12, 82, 8+cellGap+cellGap, "D")
 
 	// Price
-	pdf.Rect(20+82, 138, 35, 30+cellGap+cellGap, "D")
+	pdf.Rect(20+82, 130, 32, 30+cellGap+cellGap, "D")
 	y = pdf.GetY()
 	pdf.SetXY(20+82, y)
 	pdf.CellFormat(35-cellGap-cellGap, 14, invoice_data.getPrice(), "", 0, "L", false, 0, "")
 
-	pdf.Rect(20+82, 138+34, 35, 8+cellGap+cellGap, "D")
-	pdf.Rect(20+82, 138+34+12, 35, 8+cellGap+cellGap, "D")
+	pdf.Rect(20+82, 130+34, 32, 8+cellGap+cellGap, "D")
+	pdf.Rect(20+82, 130+34+12, 32, 8+cellGap+cellGap, "D")
 
 	// Quantity
-	pdf.Rect(20+82+35, 138, 20, 30+cellGap+cellGap, "D")
+	pdf.Rect(20+82+32, 130, 23, 30+cellGap+cellGap, "D")
 	y = pdf.GetY()
-	pdf.SetXY(20+82+35, y)
+	pdf.SetXY(20+82+32, y)
 	pdf.CellFormat(20-cellGap-cellGap, 14, fmt.Sprint(invoice_data.Quantity, ",00"), "", 0, "L", false, 0, "")
 
-	pdf.Rect(20+82+35, 138+34, 20, 8+cellGap+cellGap, "D")
+	pdf.Rect(20+82+32, 130+34, 23, 8+cellGap+cellGap, "D")
 
 	// VAT
-	pdf.SetXY(20+82+35, y+34/2)
+	pdf.SetXY(20+82+32, y+34/2)
 	s := fmt.Sprintf("VAT(%d%s)", invoice_data.VAT, "%")
 	pdf.CellFormat(20-cellGap-cellGap, 14, s, "", 0, "L", false, 0, "")
 
-	pdf.Rect(20+82+35, 138+34+12, 20, 8+cellGap+cellGap, "D")
-	pdf.SetXY(20+82+35, y)
+	pdf.Rect(20+82+32, 130+34+12, 23, 8+cellGap+cellGap, "D")
+	pdf.SetXY(20+82+32, y)
 	pdf.SetFont("helvetica", "B", 11)
-	pdf.SetXY(20+82+35, (y+34/2)+12)
+	pdf.SetXY(20+82+32, (y+34/2)+12)
 	pdf.CellFormat(20-cellGap-cellGap, 14, "Total", "", 0, "L", false, 0, "")
 
 	// Total
-	pdf.Rect(20+82+35+20, 138, 35, 30+cellGap+cellGap, "D")
-	pdf.SetXY(20+82+35+20, 138+33/2)
+	pdf.Rect(20+82+32+23, 130, 35, 30+cellGap+cellGap, "D")
+	pdf.SetXY(20+82+32+23, 130+33/2)
 	pdf.SetFont("helvetica", "", 11)
 	pdf.CellFormat(35-cellGap-cellGap, 14, invoice_data.getTotal(), "", 0, "L", false, 0, "")
 
 	y = pdf.GetY()
-	pdf.Rect(20+82+35+20, 138+34, 35, 8+cellGap+cellGap, "D")
-	pdf.SetXY(20+82+35+20, y+34/2)
-	pdf.CellFormat(35-cellGap-cellGap, 14, invoice_data.getTotalVAT(), "", 0, "L", false, 0, "")
+	pdf.Rect(20+82+32+23, 130+34, 35, 8+cellGap+cellGap, "D")
+	pdf.SetXY(20+82+32+23, y+34/2)
+	pdf.CellFormat(32-cellGap-cellGap, 14, invoice_data.getTotalVAT(), "", 0, "L", false, 0, "")
 
-	pdf.Rect(20+82+35+20, 138+34+12, 35, 8+cellGap+cellGap, "D")
-	pdf.SetXY(20+82+35+20, (y+34/2)+12)
+	pdf.Rect(20+82+32+23, 130+34+12, 35, 8+cellGap+cellGap, "D")
+	pdf.SetXY(20+82+32+23, (y+34/2)+12)
 	pdf.SetFont("helvetica", "B", 11)
-	pdf.CellFormat(35-cellGap-cellGap, 14, invoice_data.getTotalVATAmount(), "", 0, "L", false, 0, "")
+	pdf.CellFormat(32-cellGap-cellGap, 14, invoice_data.getTotalVATAmount(), "", 0, "L", false, 0, "")
 	pdf.SetFont("helvetica", "", 11)
 
 	y = pdf.GetY()
