@@ -4,12 +4,14 @@ REMOTE = github.com/coffeewasmyidea
 DIRS := \
 	. \
 
+.DEFAULT_GOAL := install
+
 uniq = $(if $1,$(firstword $1) $(call uniq,$(filter-out $(firstword $1),$1)))
 gofiles = $(foreach d,$(1),$(wildcard $(d)/*.go))
 fmt = $(addprefix fmt-,$(1))
 outsuffix = bin/$(NAME)
 
-all: bin-linux-amd64 bin-linux-arm bin-windows-amd64 bin-windows-arm bin-darwin-amd64 bin-darwin-arm64
+build: bin-linux-amd64 bin-linux-arm bin-windows-amd64 bin-windows-arm bin-darwin-amd64 bin-darwin-arm64
 
 sha = $(shell git rev-parse --short HEAD || cat SHA | tr -d ' \n')
 
@@ -62,7 +64,7 @@ $(outsuffix).darwin-arm64: $(call gofiles,$(DIRS))
 clean:
 	rm -f bin/*
 
-.PHONY: clean all \
+.PHONY: clean build \
 	bin-linux-amd64 bin-linux-arm bin-windows-amd64 bin-windows-arm bin-darwin-amd64 bin-darwin-arm64
 
 .PHONY: version

@@ -26,7 +26,7 @@ jobs:
       -
         name: Build
         run: >-
-          make -j $(nproc)
+          make -j $(nproc) build
       -
         name: Release
         uses: softprops/action-gh-release@v1

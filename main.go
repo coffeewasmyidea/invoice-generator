@@ -26,14 +26,14 @@ func main() {
 	// Declare InvoiceData struct
 	var invoice_data InvoiceData
 
+	// Run cli
+	CommandLineTool(invoice_data)
+
 	// Read TOML file
 	toml_file, err := os.ReadFile("invoice-generator.toml")
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal(err, ". You need to download the invoice-generator.toml from here https://raw.githubusercontent.com/coffeewasmyidea/invoice-generator/main/invoice-generator.toml.example")
 	}
 
 	toml.Unmarshal(toml_file, &invoice_data)
-
-	// Run cli
-	CommandLineTool(invoice_data)
 }
