@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/urfave/cli/v2"
 	"strings"
 	"time"
+
+	"github.com/urfave/cli/v2"
 
 	"github.com/go-pdf/fpdf"
 )
@@ -229,9 +230,17 @@ func InvoiceGenerator(invoice_data InvoiceData, args cli.Args) {
 	pdf.SetFont("helvetica", "B", 11)
 	pdf.CellFormat(124, 8, invoice_data.SwiftBIC, "1", 0, "L", false, 0, "")
 
+	var year int
+	var month time.Month
 	now := time.Now()
-	year, month, _ := now.Date()
 	location := now.Location()
+
+	if replace_service_period != "" {
+		year, month = ReplaceServicePeriod(replace_service_period)
+	} else {
+		year, month, _ = now.Date()
+	}
+
 	current_month := (time.Date(year, month, 1, 0, 0, 0, 0, location)).Format("02.01.06")
 	invoice_number := strings.Replace(current_month, ".", "", 2)
 	document_name := fmt.Sprintf("SE-%s.pdf", invoice_number)

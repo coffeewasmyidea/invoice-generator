@@ -23,7 +23,7 @@ curl -o /path/to/invoice-folder/invoice-generator.toml https://raw.githubusercon
 
 Download, configure, and place `invoice-generator.toml` in the project invoice directory as described above.
 
-Generate a new invoice:
+To generate a new invoice, use the command:
 
 ```shell
 invoice-generator g
@@ -49,13 +49,20 @@ NAME:
 USAGE:
    invoice-generator [global options] command [command options] [arguments...]
 
+VERSION:
+   .dev
+
+DESCRIPTION:
+   This is a simple tool for generating invoices in automatic mode. There is no need to fill out anything every month. You do it once and that's it.
+
 COMMANDS:
    generate, g  Generate a new invoice based on invoice-generator.toml information and current date.
                 Alternatively, you can pass the date (month.year) of the desired service period as anargument like this: invoice-generator g 10.2023
    help, h      Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
-   --help, -h  show help
+   --help, -h     show help
+   --version, -v  print the version
 ```
 
 ### Invoice example:

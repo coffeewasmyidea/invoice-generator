@@ -1,11 +1,26 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os"
 
 	"github.com/pelletier/go-toml/v2"
 )
+
+var (
+	ver string
+	sha string
+)
+
+func version() string {
+	if ver == "" {
+		ver = "dev"
+		sha = "unknown"
+	}
+
+	return fmt.Sprintf("invoice-generator version %s (built from sha %s)", ver, sha)
+}
 
 func main() {
 	// Declare InvoiceData struct
@@ -21,5 +36,4 @@ func main() {
 
 	// Run cli
 	CommandLineTool(invoice_data)
-
 }

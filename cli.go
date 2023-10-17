@@ -9,6 +9,10 @@ import (
 
 func CommandLineTool(invoice_data InvoiceData) {
 	app := &cli.App{
+		Name:    "invoice-generator",
+		Version: ver,
+		Description: "This is a simple tool for generating invoices in automatic mode. " +
+			"There is no need to fill out anything every month. You do it once and that's it.",
 		Commands: []*cli.Command{
 			{
 				Name:    "generate",
