@@ -17,10 +17,10 @@ Pre-built [binaries](https://github.com/coffeewasmyidea/invoice-generator/releas
 Clone the repo:
 
 ```shell
-github clone https://github.com/coffeewasmyidea/invoice-generator.git
+git clone https://github.com/coffeewasmyidea/invoice-generator.git
 ```
 
-And run the command:
+Run the command:
 
 ```shell
 make install
@@ -58,7 +58,7 @@ with the correct dates for all presented fields.
 ## Help information
 
 ```shell
-$ invoice-generator
+$ invoice-generator --help
 NAME:
    invoice-generator - A new cli application
 
@@ -66,7 +66,7 @@ USAGE:
    invoice-generator [global options] command [command options] [arguments...]
 
 VERSION:
-   .dev
+   0.6.2.35d12e0
 
 DESCRIPTION:
    This is a simple tool for generating invoices in automatic mode. There is no need to fill out anything every month. You do it once and that's it.
