@@ -8,9 +8,25 @@ files and put them in different folders where you want to save invoices.
 
 ## Installation
 
+### Binaries
+
+Pre-built [binaries](https://github.com/coffeewasmyidea/invoice-generator/releases/latest).
+
+### Build from source
+
+Clone the repo:
+
 ```shell
-go install github.com/coffeewasmyidea/invoice-generator@latest
+github clone https://github.com/coffeewasmyidea/invoice-generator.git
 ```
+
+And run the command:
+
+```shell
+make install
+```
+
+## Configuration
 
 You also need to download the `invoice-generator.toml` configuration file for
 each project folder for which you want to generate invoices. 
