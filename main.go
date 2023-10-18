@@ -26,14 +26,26 @@ func main() {
 	// Declare InvoiceData struct
 	var invoice_data InvoiceData
 
-	// Run cli
-	CommandLineTool(invoice_data)
-
 	// Read TOML file
 	toml_file, err := os.ReadFile("invoice-generator.toml")
 	if err != nil {
-		log.Fatal(err, ". You need to download the invoice-generator.toml from here https://raw.githubusercontent.com/coffeewasmyidea/invoice-generator/main/invoice-generator.toml.example")
+		ok := YnPrompt("The file invoice-generator.toml was not found in the current directory. Want to create it?", true)
+		if ok {
+			createTOML()
+		} else {
+			fmt.Println("Ok, exiting..")
+			os.Exit(0)
+		}
+	}
+
+	toml_file, err = os.ReadFile("invoice-generator.toml")
+
+	if err != nil {
+		log.Fatal(err)
 	}
 
 	toml.Unmarshal(toml_file, &invoice_data)
+
+	// Run cli
+	CommandLineTool(invoice_data)
 }

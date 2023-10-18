@@ -1,5 +1,4 @@
 NAME = invoice-generator
-REMOTE = github.com/coffeewasmyidea
 
 DIRS := \
 	. \

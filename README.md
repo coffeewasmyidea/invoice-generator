@@ -28,16 +28,18 @@ make install
 
 ## Configuration
 
-You also need to download the `invoice-generator.toml` configuration file for
-each project folder for which you want to generate invoices. 
+ When you first run generating an invoice without an `invoice-generator.toml`
+ file in the directory, the program will prompt a question:
 
 ```shell
-curl -o /path/to/invoice-folder/invoice-generator.toml https://raw.githubusercontent.com/coffeewasmyidea/invoice-generator/main/invoice-generator.toml.example
+The file invoice-generator.toml was not found in the current directory. Want to create it? (Y/n)
 ```
 
-## General usage
+Type `Y`, and then you need to open the created `invoice-generator.toml` file
+and fill in the parameters of your invoice there. This completes the
+configuration setup, now you can generate invoices.
 
-Download, configure, and place `invoice-generator.toml` in the project invoice directory as described above.
+## General usage
 
 To generate a new invoice, use the command:
 
@@ -58,15 +60,17 @@ with the correct dates for all presented fields.
 ## Help information
 
 ```shell
-$ invoice-generator --help
+$ invoice-generator
+The file invoice-generator.toml was not found in the current directory. Want to create it? (Y/n) y
+invoice-generator.toml created!
 NAME:
-   invoice-generator - A new cli application
+   invoice-generator - cli invoice assistant
 
 USAGE:
    invoice-generator [global options] command [command options] [arguments...]
 
 VERSION:
-   0.6.2.35d12e0
+   0.6.3.d1ca33e
 
 DESCRIPTION:
    This is a simple tool for generating invoices in automatic mode. There is no need to fill out anything every month. You do it once and that's it.
