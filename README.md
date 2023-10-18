@@ -12,6 +12,14 @@ files and put them in different folders where you want to save invoices.
 
 Pre-built [binaries](https://github.com/coffeewasmyidea/invoice-generator/releases/latest).
 
+Download the binary file for your platform, copy it to `/usr/local/bin`, and
+give execute permission. Here is an example of my configuration for Linux: 
+
+```shell
+sudo wget https://github.com/coffeewasmyidea/invoice-generator/releases/download/v0.7/invoice-generator.linux-amd64 -O /usr/local/bin/invoice-generator
+sudo chmod +x /usr/local/bin/invoice-generator
+```
+
 ### Build from source
 
 Clone the repo:
@@ -61,8 +69,6 @@ with the correct dates for all presented fields.
 
 ```shell
 $ invoice-generator
-The file invoice-generator.toml was not found in the current directory. Want to create it? (Y/n) y
-invoice-generator.toml created!
 NAME:
    invoice-generator - cli invoice assistant
 
@@ -70,7 +76,7 @@ USAGE:
    invoice-generator [global options] command [command options] [arguments...]
 
 VERSION:
-   0.6.3.d1ca33e
+   0.7
 
 DESCRIPTION:
    This is a simple tool for generating invoices in automatic mode. There is no need to fill out anything every month. You do it once and that's it.
