@@ -201,32 +201,32 @@ func InvoiceGenerator(invoice_data InvoiceData, args cli.Args) {
 	pdf.SetXY(18, y+23)
 
 	pdf.Ln(1)
-	pdf.CellFormat(50, 8, "Beneficiary name:", "1", 0, "L", false, 0, "")
-	pdf.SetFont("helvetica", "B", 11)
+	pdf.CellFormat(45, 8, "Beneficiary name:", "1", 0, "L", false, 0, "")
+	pdf.SetFont("helvetica", "B", 10.5)
 	pdf.CellFormat(124, 8, invoice_data.BeneficiaryName, "1", 1, "L", false, 0, "")
 	pdf.SetFont("helvetica", "", 11)
 
-	pdf.CellFormat(50, 8, "Beneficiary address:", "1", 0, "L", false, 0, "")
+	pdf.CellFormat(45, 8, "Beneficiary address:", "1", 0, "L", false, 0, "")
 	pdf.SetFont("helvetica", "B", 11)
 	pdf.CellFormat(124, 8, invoice_data.BeneficiaryAddress, "1", 1, "L", false, 0, "")
 	pdf.SetFont("helvetica", "", 11)
 
-	pdf.CellFormat(50, 8, "Bank name:", "1", 0, "L", false, 0, "")
+	pdf.CellFormat(45, 8, "Bank name:", "1", 0, "L", false, 0, "")
 	pdf.SetFont("helvetica", "B", 11)
 	pdf.CellFormat(124, 8, invoice_data.BankName, "1", 1, "L", false, 0, "")
 	pdf.SetFont("helvetica", "", 11)
 
-	pdf.CellFormat(50, 8, "Bank Address:", "1", 0, "L", false, 0, "")
+	pdf.CellFormat(45, 8, "Bank Address:", "1", 0, "L", false, 0, "")
 	pdf.SetFont("helvetica", "B", 11)
 	pdf.CellFormat(124, 8, invoice_data.BankAddress, "1", 1, "L", false, 0, "")
 	pdf.SetFont("helvetica", "", 11)
 
-	pdf.CellFormat(50, 8, "IBAN:", "1", 0, "L", false, 0, "")
+	pdf.CellFormat(45, 8, "IBAN:", "1", 0, "L", false, 0, "")
 	pdf.SetFont("helvetica", "B", 11)
 	pdf.CellFormat(124, 8, invoice_data.IBAN, "1", 1, "L", false, 0, "")
 	pdf.SetFont("helvetica", "", 11)
 
-	pdf.CellFormat(50, 8, "SWIFT/BIC:", "1", 0, "L", false, 0, "")
+	pdf.CellFormat(45, 8, "SWIFT/BIC:", "1", 0, "L", false, 0, "")
 	pdf.SetFont("helvetica", "B", 11)
 	pdf.CellFormat(124, 8, invoice_data.SwiftBIC, "1", 0, "L", false, 0, "")
 
