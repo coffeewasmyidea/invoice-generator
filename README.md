@@ -13,10 +13,10 @@ files and put them in different folders where you want to save invoices.
 Pre-built [binaries](https://github.com/coffeewasmyidea/invoice-generator/releases/latest).
 
 Download the binary file for your platform, copy it to `/usr/local/bin`, and
-give execute permission. Here is an example of my configuration for Linux: 
+give execute permission. Here is an example of my configuration for Linux:
 
 ```shell
-sudo wget https://github.com/coffeewasmyidea/invoice-generator/releases/download/v0.7/invoice-generator.linux-amd64 -O /usr/local/bin/invoice-generator
+sudo wget https://github.com/coffeewasmyidea/invoice-generator/releases/download/v0.8/invoice-generator.linux-amd64 -O /usr/local/bin/invoice-generator
 sudo chmod +x /usr/local/bin/invoice-generator
 ```
 
